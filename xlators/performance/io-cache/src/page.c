@@ -11,6 +11,7 @@
 #include <glusterfs/glusterfs.h>
 #include <glusterfs/logging.h>
 #include <glusterfs/dict.h>
+#include <glusterfs/xlator.h>
 #include "io-cache.h"
 #include "ioc-mem-types.h"
 #include <assert.h>
@@ -802,6 +803,9 @@ ioc_frame_unwind(call_frame_t *frame)
         op_errno = local->op_errno;
         goto unwind;
     }
+
+    /* gnfs requires op_errno to determine is_eof */
+    op_errno = local->op_errno;
 
     //  ioc_local_lock (local);
     iobref = iobref_new();
